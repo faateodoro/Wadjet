@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Wadjet.Infra;
+using Wadjet.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddTransient<ApplicationContext>();
+builder.Services.AddTransient<EstablishmentService>();
 
 var app = builder.Build();
 
